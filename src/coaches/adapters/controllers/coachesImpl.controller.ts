@@ -4,6 +4,7 @@ import { coachesService } from '../../domain/services/coaches.service';
 import { coaches } from '../../domain/models/coaches.model';
 import { CoachesController } from './coaches.controller';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 const errReturn = (e: Error, message: string) => {
   return {
@@ -26,7 +27,7 @@ export class CoachesControllerImpl implements CoachesController {
     }
   }
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(JwtAuthGuard)
   @Post()
   crear(@Body() datos: coaches) {
     try{
@@ -37,6 +38,7 @@ export class CoachesControllerImpl implements CoachesController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(":id")
   modificar(@Body() datos: coaches, @Param('id') id: number) {
     try{
@@ -47,6 +49,7 @@ export class CoachesControllerImpl implements CoachesController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   eliminar(@Param('id') id: number) {
     try{
@@ -57,6 +60,7 @@ export class CoachesControllerImpl implements CoachesController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(":id/edad/:edad")
   cambiarEdad(@Param('id') id: number, @Param('edad') edad: number) {
     try{
