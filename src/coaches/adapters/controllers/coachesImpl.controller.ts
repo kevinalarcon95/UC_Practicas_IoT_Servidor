@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { coachesService } from '../../domain/services/coaches.service';
 
-import { coaches } from '../../domain/models/coaches.model';
-import { CoachesController } from './coaches.controller';
-import { AuthGuard } from '@nestjs/passport';
+import {coaches} from '../../domain/models/coaches.model';
+import { CoachController } from './coaches.controller';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { CoachEntity } from 'src/coaches/domain/entities/coaches.entity';
 
 const errReturn = (e: Error, message: string) => {
   return {
@@ -14,57 +14,52 @@ const errReturn = (e: Error, message: string) => {
 }
 
 @Controller()
-export class CoachesControllerImpl implements CoachesController {
-  constructor(@Inject('CoachesService') private readonly Coacheservice: coachesService) { }
-
+export class CoachControllerImpl implements CoachController{
+  constructor(@Inject('coachesService') private readonly coachesServices: coachesService) { }
+  
   @Get()
-  listarcoaches() {
+  listar() {
     try{
-      return this.Coacheservice.listar();
+      return this.coachesServices.listar;
     }
     catch(e){
-      return errReturn(e, "Error al listar de Coaches");
+      return errReturn(e, "Error al listar entrenadores");
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
-  crear(@Body() datos: coaches) {
+  crear(@Body() datos: CoachEntity) {
     try{
-      return this.Coacheservice.crear(datos);
+      return this.coachesServices.crear(datos);
     }
     catch(e){
       return errReturn(e, "Error al crear entrenador");
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @Put(":id")
-  modificar(@Body() datos: coaches, @Param('id') id: number) {
+  modificar(@Body() datos: CoachEntity, id: number) {
     try{
-      return this.Coacheservice.modificar(id, datos);
+      return this.coachesServices.modificar(id, datos);
     }
     catch(e){
       return errReturn(e, "Error al modificar entrenador");
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   eliminar(@Param('id') id: number) {
     try{
-      return this.Coacheservice.eliminar(id);
-    }
+      return this.coachesServices.eliminar(id)   }
     catch(e){
       return errReturn(e, "Error al eliminar entrenador");
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(":id/edad/:edad")
   cambiarEdad(@Param('id') id: number, @Param('edad') edad: number) {
     try{
-      return this.Coacheservice.cambiarEdad(id, edad);
+      return this.coachesServices.cambiarEdad(id,edad);
     }
     catch(e){
       return errReturn(e, "Error al modificar edad del entrenador");

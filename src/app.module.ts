@@ -1,17 +1,34 @@
 import { Module } from '@nestjs/common';
-import { CoachesControllerImpl } from './coaches/adapters/controllers/coachesImpl.controller';
+import { CoachControllerImpl } from './coaches/adapters/controllers/coachesImpl.controller';
 import { coachesServiceImpl } from './coaches/domain/services/coachesImpl.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CoachEntity } from './coaches/domain/entities/coaches.entity';
 
 @Module({
-  imports: [AuthModule, UsersModule],
-  controllers: [CoachesControllerImpl],
-  providers: [
-    {
-      provide: 'CoachesService',
-      useClass: coachesServiceImpl
-    }
+  imports: [
+     AuthModule,
+     UsersModule,
+     TypeOrmModule.forRoot({
+        type: 'mongodb',
+        url: 'mongodb+srv://user:user@cluster0.v6v7z2l.mongodb.net/?retryWrites=true&w=majority',
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        synchronize: true, // Solo para desarrollo
+        logging: true,
+        autoLoadEntities: true,
+        ssl: true,
+     }),
+     TypeOrmModule.forFeature([CoachEntity]),
+    UsersModule,
   ],
-})
-export class AppModule {}
+  controllers: [CoachControllerImpl],
+  providers: [
+     {
+        provide: 'TabletService',
+        useClass: coachesServiceImpl,
+     },
+  ],
+  })
+  export class AppModule {}

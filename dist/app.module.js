@@ -12,17 +12,34 @@ const coachesImpl_controller_1 = require("./coaches/adapters/controllers/coaches
 const coachesImpl_service_1 = require("./coaches/domain/services/coachesImpl.service");
 const auth_module_1 = require("./auth/auth.module");
 const users_module_1 = require("./users/users.module");
+const typeorm_1 = require("@nestjs/typeorm");
+const coaches_entity_1 = require("./coaches/domain/entities/coaches.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [auth_module_1.AuthModule, users_module_1.UsersModule],
-        controllers: [coachesImpl_controller_1.CoachesControllerImpl],
+        imports: [
+            auth_module_1.AuthModule,
+            users_module_1.UsersModule,
+            typeorm_1.TypeOrmModule.forRoot({
+                type: 'mongodb',
+                url: 'mongodb+srv://user:user@cluster0.v6v7z2l.mongodb.net/?retryWrites=true&w=majority',
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                synchronize: true,
+                logging: true,
+                autoLoadEntities: true,
+                ssl: true,
+            }),
+            typeorm_1.TypeOrmModule.forFeature([coaches_entity_1.CoachEntity]),
+            users_module_1.UsersModule,
+        ],
+        controllers: [coachesImpl_controller_1.CoachControllerImpl],
         providers: [
             {
-                provide: 'CoachesService',
-                useClass: coachesImpl_service_1.coachesServiceImpl
-            }
+                provide: 'TabletService',
+                useClass: coachesImpl_service_1.coachesServiceImpl,
+            },
         ],
     })
 ], AppModule);

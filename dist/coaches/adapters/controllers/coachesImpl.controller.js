@@ -12,31 +12,30 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CoachesControllerImpl = void 0;
+exports.CoachControllerImpl = void 0;
 const common_1 = require("@nestjs/common");
-const coaches_model_1 = require("../../domain/models/coaches.model");
-const jwt_auth_guard_1 = require("../../../auth/jwt-auth.guard");
+const coaches_entity_1 = require("../../domain/entities/coaches.entity");
 const errReturn = (e, message) => {
     return {
         message: message,
         error: e
     };
 };
-let CoachesControllerImpl = class CoachesControllerImpl {
-    constructor(Coacheservice) {
-        this.Coacheservice = Coacheservice;
+let CoachControllerImpl = class CoachControllerImpl {
+    constructor(coachesServices) {
+        this.coachesServices = coachesServices;
     }
-    listarcoaches() {
+    listar() {
         try {
-            return this.Coacheservice.listar();
+            return this.coachesServices.listar;
         }
         catch (e) {
-            return errReturn(e, "Error al listar de Coaches");
+            return errReturn(e, "Error al listar entrenadores");
         }
     }
     crear(datos) {
         try {
-            return this.Coacheservice.crear(datos);
+            return this.coachesServices.crear(datos);
         }
         catch (e) {
             return errReturn(e, "Error al crear entrenador");
@@ -44,7 +43,7 @@ let CoachesControllerImpl = class CoachesControllerImpl {
     }
     modificar(datos, id) {
         try {
-            return this.Coacheservice.modificar(id, datos);
+            return this.coachesServices.modificar(id, datos);
         }
         catch (e) {
             return errReturn(e, "Error al modificar entrenador");
@@ -52,7 +51,7 @@ let CoachesControllerImpl = class CoachesControllerImpl {
     }
     eliminar(id) {
         try {
-            return this.Coacheservice.eliminar(id);
+            return this.coachesServices.eliminar(id);
         }
         catch (e) {
             return errReturn(e, "Error al eliminar entrenador");
@@ -60,7 +59,7 @@ let CoachesControllerImpl = class CoachesControllerImpl {
     }
     cambiarEdad(id, edad) {
         try {
-            return this.Coacheservice.cambiarEdad(id, edad);
+            return this.coachesServices.cambiarEdad(id, edad);
         }
         catch (e) {
             return errReturn(e, "Error al modificar edad del entrenador");
@@ -72,45 +71,40 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], CoachesControllerImpl.prototype, "listarcoaches", null);
+], CoachControllerImpl.prototype, "listar", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [coaches_model_1.coaches]),
+    __metadata("design:paramtypes", [coaches_entity_1.CoachEntity]),
     __metadata("design:returntype", void 0)
-], CoachesControllerImpl.prototype, "crear", null);
+], CoachControllerImpl.prototype, "crear", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)(":id"),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [coaches_model_1.coaches, Number]),
+    __metadata("design:paramtypes", [coaches_entity_1.CoachEntity, Number]),
     __metadata("design:returntype", void 0)
-], CoachesControllerImpl.prototype, "modificar", null);
+], CoachControllerImpl.prototype, "modificar", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Delete)(":id"),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
-], CoachesControllerImpl.prototype, "eliminar", null);
+], CoachControllerImpl.prototype, "eliminar", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Patch)(":id/edad/:edad"),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Param)('edad')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", void 0)
-], CoachesControllerImpl.prototype, "cambiarEdad", null);
-CoachesControllerImpl = __decorate([
+], CoachControllerImpl.prototype, "cambiarEdad", null);
+CoachControllerImpl = __decorate([
     (0, common_1.Controller)(),
-    __param(0, (0, common_1.Inject)('CoachesService')),
+    __param(0, (0, common_1.Inject)('coachesService')),
     __metadata("design:paramtypes", [Object])
-], CoachesControllerImpl);
-exports.CoachesControllerImpl = CoachesControllerImpl;
+], CoachControllerImpl);
+exports.CoachControllerImpl = CoachControllerImpl;
 //# sourceMappingURL=coachesImpl.controller.js.map

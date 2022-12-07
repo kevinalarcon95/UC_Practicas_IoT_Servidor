@@ -1,27 +1,27 @@
 import { coachesService } from '../../domain/services/coaches.service';
-import { coaches } from '../../domain/models/coaches.model';
-import { CoachesController } from './coaches.controller';
-export declare class CoachesControllerImpl implements CoachesController {
-    private readonly Coacheservice;
-    constructor(Coacheservice: coachesService);
-    listarcoaches(): coaches[] | {
+import { CoachController } from './coaches.controller';
+import { CoachEntity } from 'src/coaches/domain/entities/coaches.entity';
+export declare class CoachControllerImpl implements CoachController {
+    private readonly coachesServices;
+    constructor(coachesServices: coachesService);
+    listar(): (() => Promise<CoachEntity[]>) | {
         message: string;
         error: Error;
     };
-    crear(datos: coaches): coaches | {
+    crear(datos: CoachEntity): {
         message: string;
         error: Error;
-    };
-    modificar(datos: coaches, id: number): coaches | {
+    } | Promise<import("typeorm").InsertResult>;
+    modificar(datos: CoachEntity, id: number): {
         message: string;
         error: Error;
-    };
-    eliminar(id: number): boolean | {
+    } | Promise<import("typeorm").UpdateResult>;
+    eliminar(id: number): {
         message: string;
         error: Error;
-    };
-    cambiarEdad(id: number, edad: number): coaches | {
+    } | Promise<boolean>;
+    cambiarEdad(id: number, edad: number): {
         message: string;
         error: Error;
-    };
+    } | Promise<import("typeorm").UpdateResult>;
 }

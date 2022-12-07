@@ -1,46 +1,40 @@
 import { Injectable } from '@nestjs/common';
-import { coaches } from '../models/coaches.model';
+import { InjectRepository } from '@nestjs/typeorm';
+import { InsertResult, MongoRepository, UpdateResult } from 'typeorm';
+import { CoachEntity } from '../entities/coaches.entity';
 import { coachesService } from './coaches.service';
-
 
 @Injectable()
 export class coachesServiceImpl implements coachesService {
+  
+  constructor(
+    @InjectRepository(CoachEntity)
+    private readonly repository: MongoRepository<CoachEntity>,
+  ) {}
 
-  private coach: coaches[] = [{
-    nombre: 'Andres felipe',
-    apellido: 'Perez mora',
-    edad: 27,
-    team: 'Colombia'
-  }]
 
-  public listar() : coaches[] {
-    return this.coach
+  public async listar(): Promise<CoachEntity[]> {
+    return await this.repository.find();
+  }
+  public async crear(coaches: CoachEntity): Promise<InsertResult> {
+    const newTablet = await this.repository.insert(coaches);
+    return newTablet;
+  }
+  public async modificar(id: number, coaches: CoachEntity): Promise<UpdateResult> {
+    const updatedTablet = await this.repository.update(id, coaches);
+    return updatedTablet;
+  }
+  public async eliminar(id: number): Promise<boolean> {
+    const deleteResult = await this.repository.delete(id);
+    return deleteResult.affected > 0;
+  }
+  public async cambiarEdad(id: number, age: number): Promise<UpdateResult> {
+    const updated = await this.repository.update(id, { edad: age });
+    return updated;
   }
 
-  public crear(coaches: coaches): coaches {
-    this.coach.push(coaches);
-    return coaches;
-  }
+  
 
-  public modificar(id: number, coaches: coaches): coaches {
-      this.coach[id] = coaches
-      return this.coach[id];
-  }
-
-  public eliminar(id: number): boolean {
-    const totalcoachesAntes = this.coach.length;
-    this.coach = this.coach.filter((val, index) => index != id);
-    if(totalcoachesAntes == this.coach.length){
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-
-   public cambiarEdad(id: number, edad: number): coaches {
-      this.coach[id].edad = edad;
-      return this.coach[id];
-   }
+  
 
 }

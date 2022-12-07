@@ -1,10 +1,12 @@
-import { coaches } from '../models/coaches.model';
+import { InsertResult, MongoRepository, UpdateResult } from 'typeorm';
+import { CoachEntity } from '../entities/coaches.entity';
 import { coachesService } from './coaches.service';
 export declare class coachesServiceImpl implements coachesService {
-    private coach;
-    listar(): coaches[];
-    crear(coaches: coaches): coaches;
-    modificar(id: number, coaches: coaches): coaches;
-    eliminar(id: number): boolean;
-    cambiarEdad(id: number, edad: number): coaches;
+    private readonly repository;
+    constructor(repository: MongoRepository<CoachEntity>);
+    listar(): Promise<CoachEntity[]>;
+    crear(coaches: CoachEntity): Promise<InsertResult>;
+    modificar(id: number, coaches: CoachEntity): Promise<UpdateResult>;
+    eliminar(id: number): Promise<boolean>;
+    cambiarEdad(id: number, age: number): Promise<UpdateResult>;
 }

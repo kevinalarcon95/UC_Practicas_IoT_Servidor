@@ -1,35 +1,20 @@
-import {coaches} from '../../domain/models/coaches.model';
+import { CoachEntity } from 'src/coaches/domain/entities/coaches.entity';
 
-export interface CoachesController {
-   /**
-    *  Retorna la lista de coaches
-    */
-   listarcoaches();
 
-   /**
-    * Crea un entrenador
-    * @param datos Objeto con datos de entrenador
-    */
-   crear(datos: coaches);
+export interface CoachController {
 
-   /**
-    * Modifica datos de un entrenador
-    * @param datos Objeto con datos del entrenador
-    * @param id Identificador único del entrenador
-    */
-   modificar(datos: coaches, id: number);
+   listar();
 
-   /**
-    * Elimina un entrenador
-    * @param id Identificador único del entrenador
-    */
+
+   crear(datos: CoachEntity);
+
+
+   modificar(datos: CoachEntity, id: number);
+
+
    eliminar(id: number);
 
-   /**
-    * Cambia la edad de un entrenador
-    * @param id Identificador único del entrenador
-    * @param edad edad del entrenador
-    */
+
    cambiarEdad(id: number, edad: number);
 
 }
